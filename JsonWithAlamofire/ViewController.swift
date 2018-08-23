@@ -16,14 +16,14 @@ class ViewController: UIViewController {
     
     let url = "https://jsonplaceholder.typicode.com/posts"
     
-//    var dataModel:[DataModel] = []
     var dataModel = [DataModel]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         getMethod()
-        
+        tableView.estimatedRowHeight = 208.0
+        tableView.rowHeight = UITableViewAutomaticDimension
     }
 
     func getMethod() {
@@ -32,7 +32,7 @@ class ViewController: UIViewController {
             
             switch response.result {
             case .success:
-//                print(response.result.value as? [[String:Any]] ?? [])
+                print(response.result.value as? [[String:Any]] ?? [])
                 self.getResponse(response: (response.result.value as? [[String:Any]])!)
             case .failure:
                 print("error")
@@ -41,13 +41,15 @@ class ViewController: UIViewController {
     }
     
     func getResponse(response: [[String: Any]]) {
-        for dic in response {
-            self.dataModel.append(DataModel(dic))
+        DispatchQueue.main.async {
+            for dic in response {
+                self.dataModel.append(DataModel(dic))
+            }
+            self.tableView.reloadData()
         }
         
-//      MARK:-  DON'T FORGOT TO RELOAD DATA AND APP TRANSPORT SECURITY.
         
-        tableView.reloadData()
+        
     }
 
 }
